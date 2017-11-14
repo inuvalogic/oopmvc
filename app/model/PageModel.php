@@ -2,10 +2,13 @@
 
 namespace Webhade\model;
 
-class PageModel
+class PageModel extends \Webhade\Core\Base
 {
 	public function getData()
 	{
-		echo 'ngambil data';
+		$sth = $this->db->pdo->prepare('SELECT * FROM test');
+		$sth->execute();
+		$data = $sth->fetchAll();
+		return $data;
 	}
 }
