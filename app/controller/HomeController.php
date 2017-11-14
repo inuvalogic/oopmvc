@@ -7,6 +7,7 @@ class HomeController
 {
 	public function index()
 	{
+		echo BASEURL;
 		$model = new PageModel;
 		$model->getData();
 	}
