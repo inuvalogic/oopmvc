@@ -4,7 +4,7 @@ namespace Webhade\core;
 
 class Layout
 {
-	public function render($filename, array $params = array())
+	public static function render($filename, array $params = array())
 	{
 		$viewfile = VIEW_PATH . $filename .'.php';
 		if (file_exists($viewfile)){

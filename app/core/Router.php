@@ -16,14 +16,18 @@ class Router
 
 			include CONFIG_DIR . 'routes.php';
 
+			$notfound = 0;
+
 			if (isset($routes))
 			{
 				if (is_array($routes))
 				{
-					foreach ($routes as $key => $value) {
+					foreach ($routes as $key => $value)
+					{
 						$pattern = '#^'.$key.'$#';
 
-						if (preg_match($pattern, $url)==true){
+						if (preg_match($pattern, $url)==true)
+						{
 							$uri = explode(':', $value);
 
 							$class = $uri[0];
@@ -47,9 +51,13 @@ class Router
 								}
 
 							} else {
-								echo '404 not found';
+								$notfound = 1;
 							}
 						}
+					}
+
+					if ($notfound==1){
+						echo '404 not found';
 					}
 				}
 			}
