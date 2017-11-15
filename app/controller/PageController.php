@@ -2,6 +2,7 @@
 namespace Webhade\controller;
 
 use Webhade\library\Content;
+use Webhade\core\Router;
 
 class PageController
 {
@@ -18,5 +19,11 @@ class PageController
 		$tes = new Content;
 		echo $tes->halo('wisnu');
 		echo 'halaman about';
+	}
+
+	public function cms()
+	{
+		$page = Router::uri_segment(0);
+		
 	}
 }

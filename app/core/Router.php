@@ -14,31 +14,66 @@ class Router
 			
 			$url = trim($url, '/');
 
-			$uri = explode('/', $url);
-			
-			$class = $uri[0];
+			include CONFIG_DIR . 'routes.php';
 
-			if (isset($uri[1])){
-				$method = $uri[1];
-			} else {
-				$method = 'index';
-			}
-
-			$fqn = '\Webhade\controller\\' . ucwords($class) . 'Controller';
-
-			if (class_exists($fqn))
+			if (isset($routes))
 			{
-				$hal = new $fqn;
+				if (is_array($routes))
+				{
+					foreach ($routes as $key => $value) {
+						$pattern = '#^'.$key.'$#';
 
-				if (method_exists($hal, $method)){
-					$hal->{$method}();
-				} else {
-					echo '404 not found';
+						if (preg_match($pattern, $url)==true){
+							$uri = explode(':', $value);
+
+							$class = $uri[0];
+
+							if (isset($uri[1])){
+								$method = $uri[1];
+							} else {
+								$method = 'index';
+							}
+
+							$fqn = '\Webhade\controller\\' . ucwords($class) . 'Controller';
+
+							if (class_exists($fqn))
+							{
+								$hal = new $fqn;
+
+								if (method_exists($hal, $method)){
+									$hal->{$method}();
+								} else {
+									echo '404 not found';
+								}
+
+							} else {
+								echo '404 not found';
+							}
+						}
+					}
 				}
-				
-			} else {
-				echo '404 not found';
 			}
+			
 		}
 	}
+
+	public static function uri_segment($s = 0)
+	{
+        $suri = $_SERVER['REQUEST_URI'];
+
+        $parse = parse_url($suri);
+
+        $uri = trim($parse['path'],'/');
+
+        if (!empty($uri))
+        {
+            $segment = explode('/',$uri);
+
+            if (count($segment) > 0){
+                if (isset($segment[$s])){
+                    return $segment[$s];
+                }
+            }
+        }
+   	}
 }
