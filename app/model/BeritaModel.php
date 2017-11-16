@@ -31,4 +31,51 @@ class BeritaModel extends \Webhade\core\Base
 			return false;
 		}
 	}
+
+	public function getSingleData($id)
+	{
+		$sth = $this->db->pdo->prepare('SELECT * FROM `berita` WHERE id = :id');
+		$sth->bindValue(':id', $id, PDO::PARAM_STR);
+		$sth->execute();
+		$data = $sth->fetch();
+		return $data;
+	}
+
+	public function update($judul, $isi, $id)
+	{
+		try {
+
+			$sth = $this->db->pdo->prepare('UPDATE `berita` SET `judul` = :judul, `isi` = :isi WHERE id = :id');
+
+			$sth->bindValue(':judul', $judul, PDO::PARAM_STR);
+			$sth->bindValue(':isi', $isi, PDO::PARAM_STR);
+			$sth->bindValue(':id', $id, PDO::PARAM_STR);
+			$sth->execute();
+
+			return true;
+
+		} catch(\PDOException $e) {
+
+			return false;
+
+		}
+	}
+
+	public function delete($id)
+	{
+		try {
+
+			$sth = $this->db->pdo->prepare('DELETE FROM `berita` WHERE id = :id');
+
+			$sth->bindValue(':id', $id, PDO::PARAM_STR);
+			$sth->execute();
+
+			return true;
+
+		} catch(\PDOException $e) {
+
+			return false;
+
+		}
+	}
 }

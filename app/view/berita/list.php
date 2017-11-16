@@ -9,6 +9,7 @@ if ($berita!=false)
 	<table border="1">
 		<tr>
 			<th>Judul</th>
+			<th>Spoiler</th>
 			<th>Action</th>
 		</tr>
 		<?php foreach ($berita as $row) { ?>
@@ -19,8 +20,13 @@ if ($berita!=false)
 					</a>
 				</td>
 				<td>
+						<?= substr($row['isi'], 0, 100) ?><br>
+						<?= strlen($row['isi']) //jumlah karakter ?><br>
+						<?= count(explode(' ',$row['isi'])) //jumlah kata ?><br>
+				</td>
+				<td>
 					<a href="/berita/edit/<?= $row['id']; ?>">Edit</a>
-					<a href="/berita/delete/<?= $row['id']; ?>">Delete</a>
+					<a href="/berita/delete/<?= $row['id']; ?>" onClick="return confirm('Ingin Hapus Data ?')">Delete</a>
 				</td>
 			</tr>
 		<?php } ?>

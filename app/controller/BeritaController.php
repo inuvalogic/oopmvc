@@ -59,16 +59,65 @@ class BeritaController
 	
 	public function edit()
 	{
-		echo 'edit';
+		$notif = '';
+
+		$id = Router::uri_segment(2);
+		$berita = $this->berita->getSingleData($id);
+
+		if(!$berita) 
+		{
+			echo 'Berita Tidak ada';
+		}
+
+		if (isset($_POST['edit']))
+		{
+			$judul = filter_var($_POST['judul'], FILTER_SANITIZE_STRING);
+			$isi = filter_var($_POST['isi'], FILTER_SANITIZE_STRING);
+		
+			$update = $this->berita->update($judul, $isi, $id);
+
+			if ($update === true)
+			{
+				$_SESSION['notif'] = 'sukses edit';
+				
+				Http::redirect('berita');
+
+			} else {
+				$notif = 'gagal edit';
+			}
+		}
+
+		echo Layout::render('berita/edit',[
+			'notif' => $notif,
+			'id'  => $id,
+			'berita' => $berita,
+		]);	
 	}
 
 	public function delete()
 	{
-		echo 'delete';
+		$id = Router::uri_segment(2);
+		$delete = $this->berita->delete($id);
+
+		if ($delete === true)
+		{
+			$_SESSION['notif'] = 'sukses hapus';
+			
+			Http::redirect('berita');
+
+		} else {
+			$notif = 'gagal hapus';
+		}		
 	}
 
 	public function detail()
 	{
-		echo 'detail';
+		$id = Router::uri_segment(1);
+		$berita = $this->berita->getSingleData($id);
+		$data = [
+			'berita' => $berita
+		];
+
+		echo Layout::render('berita/detail', $data);
 	}
 }
